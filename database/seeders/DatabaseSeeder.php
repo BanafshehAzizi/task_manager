@@ -17,6 +17,8 @@ class DatabaseSeeder extends Seeder
             BrowsersTableSeeder::class,
             FilesExtensionTableSeeder::class,
             FilesTypeTableSeeder::class,
+            UsersStatusTableSeeder::class,
+            UsersRoleTableSeeder::class,
             UsersEventsStatusTableSeeder::class,
             UsersEventsTableSeeder::class
         ]);
