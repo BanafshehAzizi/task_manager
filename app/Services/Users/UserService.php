@@ -4,6 +4,7 @@ namespace App\Services\Users;
 
 use App\Repositories\Users\UsersEventsRepository;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Repositories\Users\{
     UsersRepository,
@@ -81,6 +82,11 @@ class UserService extends AbstractBaseService
         }
 
         return $function;
+    }
+
+    public function revokeToken(Request $request)
+    {
+        $request->user()->token()->revoke();
     }
 
     public function updateLastLogin($input)

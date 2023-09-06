@@ -42,4 +42,10 @@ class AuthController extends Controller
 
         return $this->showResponse($response);
     }
+
+    public function logout(Request $request)
+    {
+        $this->user_service->revokeToken($request);
+        return $this->showResponse();
+    }
 }
