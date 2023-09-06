@@ -8,7 +8,7 @@ trait ResponseTrait
     {
         $response = [
             'status' => 'success',
-            'message' => __('messages.public.success'),
+            'message' => 'The request has been done successfully.',
             'response' => $input
         ];
 
@@ -25,7 +25,7 @@ trait ResponseTrait
         }
 
         if (!in_array($code, [200, 422, 401, 403, 402]) && request()->method() != 'GET') {
-            $response['message'] = __('messages.public.error.internal_server_error');
+            $response['message'] = 'internal server error';
             $code = 500;
         }
 

@@ -15,7 +15,6 @@ class UsersEventsTableSeeder extends Seeder
         $input = [
             ['id' => 1, 'name' => 'Create Article'],
             ['id' => 2, 'name' => 'Upload File'],
-            ['id' => 3, 'name' => 'Register'],
         ];
         UsersEvents::insert($input);
     }

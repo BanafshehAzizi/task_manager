@@ -66,6 +66,32 @@ class UserService extends AbstractBaseService
         return $response;
     }
 
+    public function checkAuth($input)
+    {
+        $function = $this->user_repository->showRepository([
+            'where' => [
+                ['email', $input['email']],
+                ['password', md5($input['password'])],
+                ['status_id', 1]#Active
+            ]
+        ]);
+
+        if (empty($function)) {
+            throw ValidationException::withMessages(['The username or password is incorrect.']);
+        }
+
+        return $function;
+    }
+
+    public function updateLastLogin($input)
+    {
+        $this->user_repository->updateRepository([
+            'where' => [['id', $input['id']]],
+            'input' => ['last_login' => date('Y-m-d H:i:s')]
+        ]);
+    }
+
+
     public function showEventById($input)
     {
         return $this->users_events_repository->findRepository(['id' => $input['event_id']]);

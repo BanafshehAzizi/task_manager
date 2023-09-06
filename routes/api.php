@@ -3,10 +3,10 @@
 use Illuminate\Support\Facades\Route;
 
 Route::group(['prefix' => '/v1'], function () {
-    Route::post('/register', [App\Http\Controllers\Users\UserController::class, 'register'])->name('register');//->middleware(['check_user_event:3']);
-/*    Route::post('/login', [App\Http\Controllers\Users\AuthController::class, 'login'])->name('login');
+    Route::post('/register', [App\Http\Controllers\Users\UserController::class, 'register'])->name('register');
+    Route::post('/login', [App\Http\Controllers\Users\AuthController::class, 'login'])->name('login');
 
-    Route::group(['middleware' => ['auth:api']], function () {
+/*    Route::group(['middleware' => ['auth:api']], function () {
         Route::get('/logout', [App\Http\Controllers\Users\AuthController::class, 'logout'])->name('logout');
 
         Route::group(['prefix' => '/articles'], function () {
