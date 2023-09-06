@@ -16,6 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('status_id')->default(1);
             $table->string('email')->unique();
             $table->string('password');
+            $table->dateTime('last_login');
             $table->rememberToken();
             $table->timestamps();
 
