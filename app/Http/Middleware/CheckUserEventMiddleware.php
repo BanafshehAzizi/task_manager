@@ -7,6 +7,7 @@ use App\Services\Users\UserService;
 use Closure;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 
 class CheckUserEventMiddleware
@@ -20,16 +21,17 @@ class CheckUserEventMiddleware
 
     public function handle(Request $request, Closure $next, $event_id)
     {
-        $client_id = request()->client_id;
+        $user_id = Auth::id();
         $this->validateChangeState([
-            'user_id' => request()->user_id,
+            'user_id' => $user_id,
             'event_id' => $event_id
         ]);
 
-        $client = $this->user_service->findService(['id' => $client_id]);
-        $event = $this->user_service->showEventById(['event_id' => $event_id]);
-        $client->events()->attach($event, ['event_id' => $event_id, 'status_id' => 1]);
-        $pivot_id = $client->events()->where('event_id', $event->id)->withPivot('id')->orderBy('pivot_created_at', 'desc')->orderBy('status_id', 'asc')->first()->pivot->id;
+        $pivot_id = $this->user_service->insertEvent([
+            'user_id' => $user_id,
+            'event_id' => $event_id,
+            'status_id' => 1
+        ])->id;
 
         try {
             $response = $next($request);
@@ -37,7 +39,7 @@ class CheckUserEventMiddleware
             $this->user_service->updateEvent([
                 'event_id' => $pivot_id,
                 'status_id' => 3,#error
-                'client_id' => $client_id
+                'user_id' => $user_id
             ]);
             throw $exception;
         }
@@ -46,7 +48,7 @@ class CheckUserEventMiddleware
             $this->user_service->updateEvent([
                 'event_id' => $pivot_id,
                 'status_id' => 3,#error
-                'client_id' => $client_id
+                'user_id' => $user_id
             ]);
             throw $response->exception;
         }
@@ -54,7 +56,7 @@ class CheckUserEventMiddleware
         $this->user_service->updateEvent([
             'event_id' => $pivot_id,
             'status_id' => 2,#successful
-            'client_id' => $client_id
+            'user_id' => $user_id
         ]);
 
         return $response;
@@ -62,14 +64,14 @@ class CheckUserEventMiddleware
 
     private function validateChangeState($input)
     {
-        $client = Users::find($input['client_id']);
-        if (empty($client->events->toArray())) {
+        $user = Users::find($input['user_id']);
+        if (empty($user->events->toArray())) {
             return null;
         }
-        $user_event = $client->events()->where('event_id', $input['event_id'])->orderBy('pivot_created_at', 'desc')->orderBy('status_id', 'asc')->first();
+        $user_event = $user->events()->where('event_id', $input['event_id'])->orderBy('pivot_created_at', 'desc')->orderBy('status_id', 'asc')->first();
 
         if (!empty($user_event) && $user_event->pivot->status_id == 1) {#In Progress
-            throw ValidationException::withMessages([__('messages.public.error.repetitive_request')]);
+            throw ValidationException::withMessages(['The request is repetitive.']);
         }
     }
 }

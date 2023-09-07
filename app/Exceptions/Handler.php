@@ -30,6 +30,7 @@ class Handler extends ExceptionHandler
 
     public function render($request, Throwable $exception)
     {
+        dd($exception);
         if ($exception instanceof AuthenticationException) {
             $input = [
                 'status' => 'error',

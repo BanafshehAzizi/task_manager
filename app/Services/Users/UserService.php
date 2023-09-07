@@ -30,6 +30,7 @@ class UserService extends AbstractBaseService
         parent::__construct();
         $this->user_repository = $user_repository;
         $this->users_events_repository = $users_events_repository;
+        $this->users_pivot_events_repository = $users_pivot_events_repository;
     }
 
     public function repository()
@@ -106,14 +107,19 @@ class UserService extends AbstractBaseService
     public function updateEvent($input)
     {
         try {
-            $this->findService(['id' => $input['client_id']]);
+            $this->findService(['id' => $input['user_id']]);
         } catch (\Exception $exception) {
-            throw ValidationException::withMessages([__('messages.public.error.not_exist', ['pattern' => __('validation.attributes.user')])]);
+            throw ValidationException::withMessages([__('messages.public.error.not_exist', ['pattern' => __('validation.attributes.user')])]);//todo
         }
 
         $this->users_pivot_events_repository->updateRepository([
             'where' => [['id', $input['event_id']]],
             'input' => ['status_id' => $input['status_id']]
         ]);
+    }
+
+    public function insertEvent($input)
+    {
+        return $this->users_pivot_events_repository->insertRepository($input);
     }
 }

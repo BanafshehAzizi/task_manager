@@ -29,7 +29,8 @@ class DatabaseSeeder extends Seeder
             UsersStatusTableSeeder::class,
             UsersRoleTableSeeder::class,
             UsersEventsStatusTableSeeder::class,
-            UsersEventsTableSeeder::class
+            UsersEventsTableSeeder::class,
+            SettingsTableSeeder::class
         ]);
     }
 }

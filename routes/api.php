@@ -15,10 +15,11 @@ Route::group(['prefix' => '/v1'], function () {
             Route::post('/', [App\Http\Controllers\Articles\ArticleController::class, 'insert'])->name('insert_article');//->middleware(['check_user_event:1']);
             Route::delete('/{article_id}', [App\Http\Controllers\Articles\ArticleController::class, 'delete'])->name('delete_article');
             Route::put('/{article_id}', [App\Http\Controllers\Articles\ArticleController::class, 'update'])->name('update_article');
-        });
+        });*/
 
         Route::group(['prefix' => '/files'], function () {
-            Route::post('/', [App\Http\Controllers\Files\FileController::class, 'insert'])->name('insert_file');//->middleware(['check_user_event:2']);
-        });*/
+            Route::post('/', [App\Http\Controllers\Files\FileController::class, 'insert'])->name('insert_file')->middleware(['check_user_event:2']);
+//            Route::delete('/', [App\Http\Controllers\Files\FileController::class, 'delete'])->name('delete_file');
+        });
     });
 });

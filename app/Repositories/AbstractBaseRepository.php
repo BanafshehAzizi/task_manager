@@ -88,7 +88,7 @@ abstract class AbstractBaseRepository
         }
         $function = $function->get();
         if ((!$function || count($function) == 0) && $input['exception']) {
-            throw new ModelNotFoundException(__('messages.public.error.not_found'));
+            throw new ModelNotFoundException('Information was not found.');
         }
         foreach ($function as $item) {
             $item->fill($input['input']);
