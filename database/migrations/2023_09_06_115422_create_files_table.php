@@ -23,6 +23,7 @@ return new class extends Migration
             $table->string('token');
             $table->dateTime('token_expired_at')->nullable();
             $table->dateTime('verified_at')->nullable();
+            $table->softDeletes();
             $table->timestamps();
 
             $table->foreign('user_id')

@@ -19,7 +19,7 @@ Route::group(['prefix' => '/v1'], function () {
 
         Route::group(['prefix' => '/files'], function () {
             Route::post('/', [App\Http\Controllers\Files\FileController::class, 'insert'])->name('insert_file')->middleware(['check_user_event:2']);
-//            Route::delete('/', [App\Http\Controllers\Files\FileController::class, 'delete'])->name('delete_file');
+            Route::delete('/{token}', [App\Http\Controllers\Files\FileController::class, 'delete'])->name('delete_file');
         });
     });
 });

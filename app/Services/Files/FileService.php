@@ -8,6 +8,7 @@ use App\Repositories\Files\FilesRepository;
 use App\Services\AbstractBaseService;
 use App\Services\SettingService;
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
@@ -21,10 +22,10 @@ class FileService extends AbstractBaseService
     private $setting_service;
 
     public function __construct(
-        FilesRepository $file_repository,
+        FilesRepository          $file_repository,
         FilesExtensionRepository $file_extension_repository,
-        BrowsersRepository $browser_repository,
-        SettingService $setting_service
+        BrowsersRepository       $browser_repository,
+        SettingService           $setting_service
     )
     {
         parent::__construct();
@@ -123,15 +124,32 @@ class FileService extends AbstractBaseService
             throw ValidationException::withMessages([__('messages.public.error.invalid', ['pattern' => __('validation.attributes.file_name')])]);
         }
 
-/*        $function = $this->file_extension_repository->showWithFailRepository(['where' => [['id', '!=', -1]]]);
-        if (empty($function)) {
-            throw ValidationException::withMessages([__('messages.public.error.not_exist', ['pattern' => __('validation.attributes.extension')])]);
-        }
+        /*        $function = $this->file_extension_repository->showWithFailRepository(['where' => [['id', '!=', -1]]]);
+                if (empty($function)) {
+                    throw ValidationException::withMessages([__('messages.public.error.not_exist', ['pattern' => __('validation.attributes.extension')])]);
+                }
 
-        $file_formats = $function->pluck('mime_type');*/
+                $file_formats = $function->pluck('mime_type');*/
         $function = $this->file_extension_repository->showRepository(['where' => [['name', $input['file']->getClientOriginalExtension()]]]);
         if (empty($function)) {
             throw ValidationException::withMessages([__('messages.public.error.invalid', ['pattern' => __('validation.attributes.mime_type')])]);
         }
+    }
+
+    public function delete($input)
+    {
+        try {
+            $function = $this->file_repository->showWithFailRepository([
+                'where' => [['token', $input['token']], ['user_id', $input['user_id']]]
+            ]);
+        }catch (Exception $exception) {
+            //todo
+        }
+
+        Storage::delete($function->name);
+
+        $this->file_repository->deleteRepository([
+            'where' => [['token', $input['token']], ['user_id', $input['user_id']]]
+        ]);
     }
 }

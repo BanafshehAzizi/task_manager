@@ -40,7 +40,7 @@ abstract class AbstractBaseService
         return $this->repository->deleteRepository($input);
     }
 
-    public function delete($input)
+    public function deleteService($input)
     {
         $this->repository->deleteRepository($input);
     }

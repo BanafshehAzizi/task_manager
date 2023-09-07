@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Files;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Files\FileDeleteRequest;
 use App\Http\Requests\Files\FileInsertRequest;
 use App\Services\Files\FileService;
 use App\Traits\ResponseTrait;
@@ -38,5 +39,15 @@ class FileController extends Controller
         }
 
         return $this->showResponse($response);
+    }
+
+    public function delete(FileDeleteRequest $request)
+    {
+        $input = [
+            'token' => $request->token,
+            'user_id' => Auth::id()
+        ];
+        $this->file_service->delete($input);
+        return $this->showResponse();
     }
 }
