@@ -9,7 +9,6 @@ use App\Services\AbstractBaseService;
 use App\Services\SettingService;
 use Carbon\Carbon;
 use Exception;
-use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
 
