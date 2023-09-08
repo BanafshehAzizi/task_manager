@@ -27,4 +27,8 @@ class ArticleDetail extends Model
             })
             ->withTimestamps();
     }
+
+    public function scopeFilter($query, $request){
+
+    }
 }

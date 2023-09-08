@@ -14,4 +14,8 @@ class ArticlesStatus extends Model
     ];
 
     protected $table = 'articles_status';
+
+    public function scopeFilter($query, $request){
+
+    }
 }

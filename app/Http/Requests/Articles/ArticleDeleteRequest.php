@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Requests\Files;
+namespace App\Http\Requests\Articles;
 
 use App\Traits\ValidationTrait;
 use Illuminate\Foundation\Http\FormRequest;
 
-class FileDeleteRequest extends FormRequest
+class ArticleDeleteRequest extends FormRequest
 {
     use ValidationTrait;
 
@@ -16,13 +16,14 @@ class FileDeleteRequest extends FormRequest
 
     protected function prepareForValidation()
     {
-        $this->merge(['token' => $this->route('token')]);
+        $this->merge(['article_id' => $this->route('article_id')]);
     }
 
     public function rules()
     {
         return [
-            'token' => ['required', 'string'],
+            'article_id' => ['required', 'uuid', 'exists:articles,id'],
         ];
     }
+
 }

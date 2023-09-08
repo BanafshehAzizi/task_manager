@@ -14,4 +14,8 @@ class ArticlesPriority extends Model
     ];
 
     protected $table = 'articles_priority';
+
+    public function scopeFilter($query, $request){
+
+    }
 }

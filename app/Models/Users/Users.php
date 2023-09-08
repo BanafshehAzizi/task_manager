@@ -37,4 +37,9 @@ class Users extends Authenticatable
             })
             ->withPivot('status_id')->withTimestamps();
     }
+
+    public function scopeFilter($query, $request){
+
+    }
+
 }

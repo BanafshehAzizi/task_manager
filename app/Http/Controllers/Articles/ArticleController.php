@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Articles;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Articles\ArticleDeleteRequest;
 use App\Http\Requests\Articles\ArticleInsertRequest;
 use App\Http\Requests\Articles\ArticleListRequest;
 use App\Services\ArticleService\ArticleService;
@@ -46,6 +47,16 @@ class ArticleController extends Controller
         ];
         $response = $this->article_service->insert($input);
         return $this->showResponse($response);
+    }
+
+    public function delete(ArticleDeleteRequest $request)
+    {
+        $input = [
+            'article_id' => $request->article_id,
+            'author_id' => Auth::id()
+        ];
+        $this->article_service->delete($input);
+        return $this->showResponse();
     }
 
 }

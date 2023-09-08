@@ -11,6 +11,7 @@ use App\Services\Files\FileService;
 use App\Services\SettingService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
 
 class ArticleService extends AbstractBaseService
@@ -93,5 +94,12 @@ class ArticleService extends AbstractBaseService
     public function repository()
     {
         return ArticlesRepository::class;
+    }
+
+    public function delete($input)
+    {
+        $this->article_repository->deleteRepository([
+            'where' => [['id', $input['article_id']], ['author_id', $input['author_id']]]
+        ]);
     }
 }
