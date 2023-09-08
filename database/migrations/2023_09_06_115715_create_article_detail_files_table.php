@@ -11,15 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('articles_pivot_files', function (Blueprint $table) {
+        Schema::create('article_detail_files', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->uuid('article_id');
+            $table->uuid('detail_id');
             $table->uuid('file_id');
             $table->timestamps();
 
-            $table->foreign('article_id')
+            $table->foreign('detail_id')
                 ->references('id')
-                ->on('articles')
+                ->on('article_detail')
                 ->onUpdate('cascade');
 
             $table->foreign('file_id')
@@ -34,6 +34,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('articles_pivot_files');
+        Schema::dropIfExists('article_detail_files');
     }
 };

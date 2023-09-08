@@ -12,7 +12,7 @@ trait ValidationTrait
 
     protected function failedValidation(Validator $validator)
     {
-//        throw new ValidationException($validator, $validator->errors());
+        throw new ValidationException($validator, $validator->errors());
     }
 
 }

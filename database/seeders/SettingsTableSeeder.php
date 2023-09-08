@@ -12,6 +12,7 @@ class SettingsTableSeeder extends Seeder
     {
         $input = [
             ['name' => 'حداکثر مدت اعتبار تولید توکن فایل', 'key' => 'file.access.max', 'value' => '4320', 'user_id' => 1, 'type' => 'input'],
+            ['name' => 'حداکثر تعدا کاراکتر خلاصه تسک', 'key' => 'article.summary.length.max', 'value' => '200', 'user_id' => 1, 'type' => 'input'],
         ];
         Settings::insert($input);
     }

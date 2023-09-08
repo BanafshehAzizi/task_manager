@@ -2,9 +2,11 @@
 
 namespace App\Models\Articles;
 
+use App\Models\Files\Files;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\Pivot;
 
 class ArticleDetail extends Model
 {
@@ -12,8 +14,17 @@ class ArticleDetail extends Model
 
     protected $fillable = [
         'article_id',
-        'content',
+        'description',
     ];
 
     protected $table = 'article_detail';
+
+    public function files()
+    {
+        return $this->belongsToMany(Files::class, 'article_detail_files', 'detail_id', 'file_id')
+            ->using(new class extends Pivot {
+                use HasUuids;
+            })
+            ->withTimestamps();
+    }
 }

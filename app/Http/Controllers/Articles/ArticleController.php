@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\Articles;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Articles\ArticleInsertRequest;
 use App\Http\Requests\Articles\ArticleListRequest;
 use App\Services\ArticleService\ArticleService;
 use App\Traits\ResponseTrait;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ArticleController extends Controller
 {
@@ -28,6 +30,22 @@ class ArticleController extends Controller
     {
         $function = $this->article_service->show($request);
         return $this->showResponse($function);
+    }
+
+    public function insert(ArticleInsertRequest $request)
+    {
+        $input = [
+            'title' => $request->title,
+            'priority_id' => $request->priority_id,
+            'author_id' => Auth::id(),
+            'description' => $request->description,
+            'attachments' => $request->attachments,
+            'browser_name' => $request->browser_name ?: null,
+            'ip_address' => $request->ip_address ?: null,
+            'published_at' => $request->published_at ?: date('Y-m-d H:i:s')
+        ];
+        $response = $this->article_service->insert($input);
+        return $this->showResponse($response);
     }
 
 }
