@@ -1,21 +1,13 @@
-@include('admin.layout.partials.header')
-<body>
+@section('header')
+    <script src="{{ asset('assets/js/custom/user/logout.js') }}"></script>
+@endsection
+    @include('layout.partials.header')
 <div class="container-scroller">
-    <!-- partial:../../partials/_navbar.html -->
-@include('admin.layout.partials.navbar')
-<!-- partial -->
+    @include('layout.partials.navbar')
     <div class="container-fluid page-body-wrapper">
-        <!-- partial:../../partials/_sidebar.html -->
-    @if(str_contains(url()->current(), 'date'))
-        @include('admin.layout.partials.report_sidebar')
-    @else
-        @include('admin.layout.partials.sidebar')
-    @endif
-    <!-- partial -->
+        @include('layout.partials.sidebar')
         <div class="main-panel">
             <div class="content-wrapper">
                 @yield('content')
             </div>
-            <!-- content-wrapper ends -->
-            <!-- partial:../../partials/_footer.html -->
-@include('admin.layout.partials.footer')
+@include('layout.partials.footer')
