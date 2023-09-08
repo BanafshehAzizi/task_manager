@@ -12,4 +12,11 @@ class ArticleController extends Controller
             'title' => 'Dashboard'
         ]);
     }
+
+    public function insert()
+    {
+        return view('articles.insert')->with([
+            'title' => 'Create Article'
+        ]);
+    }
 }

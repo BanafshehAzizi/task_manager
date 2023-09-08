@@ -25,5 +25,9 @@ Route::group(['prefix' => '/v1'], function () {
             Route::post('/', [App\Http\Controllers\Files\FileController::class, 'insert'])->name('insert_file')->middleware(['check_user_event:2']);
             Route::delete('/{token}', [App\Http\Controllers\Files\FileController::class, 'delete'])->name('delete_file');
         });*/
+
+        Route::group(['prefix' => '/users'], function () {
+            Route::get('/', [\App\Http\Controllers\Api\Users\UserController::class, 'list'])->name('show_users');
+        });
     });
 });

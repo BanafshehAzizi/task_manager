@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\Users;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Articles\ArticleListRequest;
 use App\Http\Requests\Users\UserRegisterRequest;
 use App\Services\Users\UserService;
 use App\Traits\ResponseTrait;
@@ -29,6 +30,12 @@ class UserController extends Controller
 
         $function = $this->user_service->createToken($function);
 
+        return $this->showResponse($function);
+    }
+
+    public function list(ArticleListRequest $request)
+    {
+        $function = $this->user_service->list($request);
         return $this->showResponse($function);
     }
 

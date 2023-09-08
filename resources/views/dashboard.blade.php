@@ -33,5 +33,5 @@
         </div>
 @endsection
 @section('script')
-    <script src="{{ asset('assets/js/custom/article/articles.js') }}"></script>
+    <script src="{{ asset('assets/js/custom/article/dashboard.js') }}"></script>
 @endsection

@@ -38,8 +38,15 @@ class Users extends Authenticatable
             ->withPivot('status_id')->withTimestamps();
     }
 
-    public function scopeFilter($query, $request){
+    public function scopeFilter($query, $request)
+    {
+        $query->when($request->user_id ?? false,
+            fn($query, $request) => $query->where('users.id', $request)
+        );
 
+        $query->when($request->status_id ?? false,
+            fn($query, $request) => $query->where('status_id', $request)
+        );
     }
 
 }

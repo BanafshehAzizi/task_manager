@@ -122,4 +122,9 @@ class UserService extends AbstractBaseService
     {
         return $this->users_pivot_events_repository->insertRepository($input);
     }
+
+    public function list(Request $request)
+    {
+        return $this->user_repository->list($request);
+    }
 }
