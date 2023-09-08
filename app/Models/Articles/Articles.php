@@ -35,7 +35,7 @@ class Articles extends Model
 
     public function author()
     {
-        return $this->belongsTo(Users::class, 'user_id', 'id');
+        return $this->belongsTo(Users::class, 'author_id', 'id');
     }
 
     public function scopeFilter($query, $request)

@@ -12,13 +12,6 @@
                         <img src="{{ asset('assets/images/profile-icon.svg') }}" alt="user" class="rounded-circle" width="31">
                         <span class="availability-status online"></span>
                     </div>
-                    <div class="nav-profile-text">
-                        <p class="mb-1 text-black">
-                            @if(session()->get('mabna_bi_admin_session'))
-                                {{ session()->get('mabna_bi_admin_session')['first_name'] .' '. session()->get('mabna_bi_admin_session')['last_name'] }}
-                            @endif
-                        </p>
-                    </div>
                 </a>
                 <div class="dropdown-menu navbar-dropdown" aria-labelledby="profileDropdown">
                     <a class="dropdown-item" onclick="logout()">

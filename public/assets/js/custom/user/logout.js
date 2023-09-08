@@ -1,3 +1,9 @@
+$(document).ready(function() {
+    if (!checkToken()) {
+        return false;
+    }
+});
+
 function checkToken() {
     const token = localStorage.getItem('token');
     if (!token) {
@@ -6,11 +12,6 @@ function checkToken() {
     }
 }
 
-$(document).ready(function() {
-    if (!checkToken()) {
-        return false;
-    }
-});
 
 function logout() {
     const token = localStorage.getItem('token');
