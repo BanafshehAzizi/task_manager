@@ -31,7 +31,6 @@ class ArticlesRepository extends AbstractBaseRepository
         $priority_select = ['id', 'name'];
         $status_select = ['id', 'name'];
         $author_select = ['id', 'first_name', 'last_name'];
-        $detail_select = ['id', 'content'];
 
         $article_order_by_column = $request->order_by_column ?: 'created_at';
         $article_order_by_direction = $request->order_by_direction ?: 'desc';
@@ -41,7 +40,6 @@ class ArticlesRepository extends AbstractBaseRepository
 
         $function = $this->model::withHasPriority($priority_select, $request->priority ?? null)
             ->withHasStatus($status_select, $request->status ?? null)
-            ->withHasDetail($detail_select, $request->detail ?? null)
             ->withHasAuthor($author_select, $request->author ?? null)
             ->filter($request)
             ->orderBy($article_order_by_column, $article_order_by_direction);
