@@ -16,11 +16,9 @@ function list() {
         },
         cache: false,
         success: function (data) {
-            console.log('hhhh');
             if (data.status == 'success') {
                 let html = '';
                 data.response.forEach((value, key) => {
-                    console.log(value);
                     html += `<li class="position-relative booking">
                                 <div class="media">
                                     <div class="msg-img">
