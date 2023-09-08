@@ -24,12 +24,12 @@ class ArticleService extends AbstractBaseService
     private $setting_service;
 
     public function __construct(
-        ArticlesRepository $articles_repository,
-        ArticleDetailRepository $article_detail_repository,
-        ArticlesStatusRepository $article_status_repository,
+        ArticlesRepository         $articles_repository,
+        ArticleDetailRepository    $article_detail_repository,
+        ArticlesStatusRepository   $article_status_repository,
         ArticlesPriorityRepository $article_priority_repository,
-        FileService $file_service,
-        SettingService $setting_service
+        FileService                $file_service,
+        SettingService             $setting_service
     )
     {
         $this->article_repository = $articles_repository;
@@ -105,7 +105,7 @@ class ArticleService extends AbstractBaseService
 
     public function update($input)
     {
-        DB::transaction(function () use ($input){
+        DB::transaction(function () use ($input) {
             $input_temp = $input;
             unset($input_temp['article_id'], $input_temp['description']);
             $this->article_repository->updateRepository([
@@ -119,6 +119,29 @@ class ArticleService extends AbstractBaseService
                     'input' => ['description' => $input['description']]
                 ]);
             }
+        });
+
+    }
+
+    public function insertFiles($input)
+    {
+        try {
+            $article_detail = $this->article_detail_repository->showWithFailRepository([
+                'where' => [['article_id', $input['article_id']]],
+            ]);
+        } catch (\Exception $exception) {
+            //TODO
+        }
+
+        DB::transaction(function () use ($input, $article_detail) {
+            $file_ids = [];
+            foreach ($input['files'] as $file) {
+                $input['file_type'] = 'private';
+                $input['file'] = $file;
+                $function = $this->file_service->insert($input);
+                $file_ids[] = $function->id;
+            }
+            $article_detail->files()->attach($file_ids);
         });
 
     }

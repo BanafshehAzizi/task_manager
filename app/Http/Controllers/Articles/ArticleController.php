@@ -4,9 +4,11 @@ namespace App\Http\Controllers\Articles;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Articles\ArticleDeleteRequest;
+use App\Http\Requests\Articles\ArticleFileInsertRequest;
 use App\Http\Requests\Articles\ArticleInsertRequest;
 use App\Http\Requests\Articles\ArticleListRequest;
 use App\Http\Requests\Articles\ArticleUpdateRequest;
+use App\Http\Requests\Files\FileInsertRequest;
 use App\Services\ArticleService\ArticleService;
 use App\Traits\ResponseTrait;
 use Illuminate\Http\Request;
@@ -72,6 +74,19 @@ class ArticleController extends Controller
         ];
         $input = array_intersect_key($input, $request->toArray());
         $this->article_service->update($input);
+        return $this->showResponse();
+    }
+
+    public function insertFiles(ArticleFileInsertRequest $request)
+    {
+        $input = [
+            'article_id' => $request->article_id,
+            'user_id' => Auth::id(),
+            'browser_name' => $request->browser_name,
+            'ip_address' => $request->ip_address,
+            'files' => $request->file('files')
+        ];
+        $this->article_service->insertFiles($input);
         return $this->showResponse();
     }
 
