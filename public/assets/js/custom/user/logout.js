@@ -1,12 +1,15 @@
 function checkToken() {
     const token = localStorage.getItem('token');
     if (!token) {
-        window.location.href = '/login';
+        window.location.replace('/login');
+        return false;
     }
 }
 
 $(document).ready(function() {
-    checkToken();
+    if (!checkToken()) {
+        return false;
+    }
 });
 
 function logout() {
