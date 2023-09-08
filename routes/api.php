@@ -17,7 +17,7 @@ Route::group(['prefix' => '/v1'], function () {
             Route::put('/{article_id}', [App\Http\Controllers\Articles\ArticleController::class, 'update'])->name('update_article');
             Route::group(['prefix' => '/{article_id}/files'], function () {
                 Route::post('/', [App\Http\Controllers\Articles\ArticleController::class, 'insertFiles'])->name('insert_article_files')->middleware(['check_user_event:3']);
-//                Route::delete('/{token}', [App\Http\Controllers\Articles\ArticleController::class, 'deleteFile'])->name('delete_article_file');
+                Route::delete('/{token}', [App\Http\Controllers\Articles\ArticleController::class, 'deleteFile'])->name('delete_article_file');
             });
         });
 

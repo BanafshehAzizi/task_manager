@@ -15,6 +15,7 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->uuid('detail_id');
             $table->uuid('file_id');
+            $table->softDeletes();
             $table->timestamps();
 
             $table->foreign('detail_id')

@@ -138,17 +138,17 @@ class FileService extends AbstractBaseService
     public function delete($input)
     {
         try {
-            $function = $this->file_repository->showWithFailRepository([
-                'where' => [['token', $input['token']], ['user_id', $input['user_id']]]
+            $file = $this->file_repository->showWithFailRepository([
+                'where' => [['token', $input['token']]]//, ['user_id', $input['user_id']]
             ]);
         }catch (Exception $exception) {
             //todo
         }
 
-        Storage::delete($function->name);
+        Storage::delete($file->name);
 
         $this->file_repository->deleteRepository([
-            'where' => [['token', $input['token']], ['user_id', $input['user_id']]]
+            'where' => [['token', $input['token']]]//, ['user_id', $input['user_id']]
         ]);
     }
 }

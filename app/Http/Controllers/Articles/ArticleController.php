@@ -4,10 +4,12 @@ namespace App\Http\Controllers\Articles;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Articles\ArticleDeleteRequest;
+use App\Http\Requests\Articles\ArticleFileDeleteRequest;
 use App\Http\Requests\Articles\ArticleFileInsertRequest;
 use App\Http\Requests\Articles\ArticleInsertRequest;
 use App\Http\Requests\Articles\ArticleListRequest;
 use App\Http\Requests\Articles\ArticleUpdateRequest;
+use App\Http\Requests\Files\FileDeleteRequest;
 use App\Http\Requests\Files\FileInsertRequest;
 use App\Services\ArticleService\ArticleService;
 use App\Traits\ResponseTrait;
@@ -87,6 +89,17 @@ class ArticleController extends Controller
             'files' => $request->file('files')
         ];
         $this->article_service->insertFiles($input);
+        return $this->showResponse();
+    }
+
+    public function deleteFile(ArticleFileDeleteRequest $request)
+    {
+        $input = [
+            'article_id' => $request->article_id,
+            'token' => $request->token,
+            'user_id' => Auth::id()
+        ];
+        $this->article_service->deleteFile($input);
         return $this->showResponse();
     }
 

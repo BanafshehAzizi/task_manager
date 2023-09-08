@@ -9,6 +9,7 @@ use App\Repositories\Articles\ArticlesStatusRepository;
 use App\Services\AbstractBaseService;
 use App\Services\Files\FileService;
 use App\Services\SettingService;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -144,5 +145,29 @@ class ArticleService extends AbstractBaseService
             $article_detail->files()->attach($file_ids);
         });
 
+    }
+
+    public function deleteFile($input)
+    {
+        try {
+            $article_detail = $this->article_detail_repository->showWithFailRepository([
+                'where' => [['article_id', $input['article_id']]],
+            ]);
+        } catch (\Exception $exception) {
+            //TODO
+        }
+
+        try {
+            $file = $this->file_service->showWithFailService([
+                'where' => [['token', $input['token']]],
+            ]);
+        } catch (\Exception $exception) {
+            //TODO
+        }
+
+        DB::transaction(function () use ($input, $article_detail, $file) {
+            $article_detail->files()->detach($file->id);
+            $this->file_service->delete(['token' => $input['token']]);
+        });
     }
 }

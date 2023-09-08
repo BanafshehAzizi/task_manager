@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Pivot;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class ArticleDetail extends Model
 {
@@ -23,7 +24,7 @@ class ArticleDetail extends Model
     {
         return $this->belongsToMany(Files::class, 'article_detail_files', 'detail_id', 'file_id')
             ->using(new class extends Pivot {
-                use HasUuids;
+                use HasUuids, SoftDeletes;
             })
             ->withTimestamps();
     }
