@@ -102,4 +102,24 @@ class ArticleService extends AbstractBaseService
             'where' => [['id', $input['article_id']], ['author_id', $input['author_id']]]
         ]);
     }
+
+    public function update($input)
+    {
+        DB::transaction(function () use ($input){
+            $input_temp = $input;
+            unset($input_temp['article_id'], $input_temp['description']);
+            $this->article_repository->updateRepository([
+                'where' => [['id', $input['article_id']]],
+                'input' => $input_temp
+            ]);
+
+            if (!empty($input['description'])) {
+                $this->article_detail_repository->updateRepository([
+                    'where' => [['article_id', $input['article_id']]],
+                    'input' => ['description' => $input['description']]
+                ]);
+            }
+        });
+
+    }
 }

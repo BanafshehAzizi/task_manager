@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Articles\ArticleDeleteRequest;
 use App\Http\Requests\Articles\ArticleInsertRequest;
 use App\Http\Requests\Articles\ArticleListRequest;
+use App\Http\Requests\Articles\ArticleUpdateRequest;
 use App\Services\ArticleService\ArticleService;
 use App\Traits\ResponseTrait;
 use Illuminate\Http\Request;
@@ -56,6 +57,21 @@ class ArticleController extends Controller
             'author_id' => Auth::id()
         ];
         $this->article_service->delete($input);
+        return $this->showResponse();
+    }
+
+    public function update(ArticleUpdateRequest $request)
+    {
+        $input = [
+            'article_id' => $request->article_id,
+            'title' => $request->title,
+            'priority_id' => $request->priority_id,
+            'author_id' => $request->autho_id,
+            'description' => $request->description,
+            'published_at' => $request->published_at
+        ];
+        $input = array_intersect_key($input, $request->toArray());
+        $this->article_service->update($input);
         return $this->showResponse();
     }
 
