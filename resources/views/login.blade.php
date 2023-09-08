@@ -1,17 +1,4 @@
 @include('layout.partials.header')
-<body>
-<header>
-    <div class="toast align-items-center text-white bg-primary border-0 position-fixed" role="alert"
-         aria-live="assertive" aria-atomic="true">
-        <div class="d-flex">
-            <div class="toast-body">
-            </div>
-            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
-                    aria-label="Close"></button>
-        </div>
-    </div>
-</header>
-<section>
 <div class="container-scroller">
     <div class="container-fluid page-body-wrapper full-page-wrapper">
         <div class="content-wrapper align-items-center auth">
@@ -47,6 +34,6 @@
             </div>
 </section>
             @section('script')
-                <script src="{{ asset('assets/js/custom/login.js') }}"></script>
+                <script src="{{ asset('assets/js/custom/user/login.js') }}"></script>
 @endsection
 @include('layout.partials.footer')

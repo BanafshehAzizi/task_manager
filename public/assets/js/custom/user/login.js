@@ -1,7 +1,3 @@
-$(document).ready(function () {
-    $('.toast').toast('hide');
-});
-
 function login() {
     const email = $('#email').val();
     const password = $('#password').val();
@@ -10,13 +6,13 @@ function login() {
     const password_validation = isNotEmpty(password);
 
     if (email_validation == false) {
-        $('.toast-body').html('The item email field is invalid');
+        $('.toast-body').html('The email field is invalid');
         $('.toast').toast('show');
         return false;
     }
 
     if (password_validation == false) {
-        $('.toast-body').html('The item password field is invalid');
+        $('.toast-body').html('The password field is invalid');
         $('.toast').toast('show');
         return false;
     }
@@ -50,9 +46,3 @@ function login() {
     });
 }
 
-function isNotEmpty(name) {
-    if (name === undefined || name.trim() === "") {
-        return false;
-    }
-    return true;
-}
