@@ -11,7 +11,7 @@ Route::group(['prefix' => '/v1'], function () {
 
         Route::group(['prefix' => '/articles'], function () {
             Route::get('/', [App\Http\Controllers\Articles\ArticleController::class, 'list'])->name('show_articles');
-//            Route::get('/{article_id}', [App\Http\Controllers\Articles\ArticleController::class, 'show'])->name('show_article');
+            Route::get('/{article_id}', [App\Http\Controllers\Articles\ArticleController::class, 'show'])->name('show_article');
 //            Route::post('/', [App\Http\Controllers\Articles\ArticleController::class, 'insert'])->name('insert_article');//->middleware(['check_user_event:1']);
 //            Route::delete('/{article_id}', [App\Http\Controllers\Articles\ArticleController::class, 'delete'])->name('delete_article');
 //            Route::put('/{article_id}', [App\Http\Controllers\Articles\ArticleController::class, 'update'])->name('update_article');

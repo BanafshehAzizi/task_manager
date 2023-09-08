@@ -38,6 +38,11 @@ class ArticleService extends AbstractBaseService
         return $this->article_repository->list($request);
     }
 
+    public function show(Request $request)
+    {
+        return $this->article_repository->show($request);
+    }
+
     public function repository()
     {
         return ArticlesRepository::class;
