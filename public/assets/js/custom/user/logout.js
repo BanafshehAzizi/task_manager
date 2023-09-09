@@ -1,18 +1,21 @@
-$(document).ready(function() {
-    if (!checkToken()) {
+$(document).ready(function () {
+/*    const previousURL = localStorage.getItem('previousURL');
+    if (!previousURL || previousURL !== window.location.href) {
+        localStorage.setItem('previousURL', window.location.href);
+        window.location.href = '/loading';
+    }
+    localStorage.setItem('previousURL', null);*/
+    if (!hasToken()) {
+        window.location.href = '/login';
         return false;
     }
+    $('#content').show();
+    $('#loading').hide();
 });
 
-function checkToken() {
-    const token = localStorage.getItem('token');
-    if (!token) {
-        window.location.replace('/login');
-        return false;
-    }
+function hasToken() {
+    return localStorage.getItem('token');
 }
-
-
 function logout() {
     const token = localStorage.getItem('token');
 
@@ -21,10 +24,9 @@ function logout() {
         type: "GET",
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-            'Authorization' : 'Bearer ' + token
+            'Authorization': 'Bearer ' + token
         },
-        data: {
-        },
+        data: {},
         cache: false,
         success: function (data) {
             $('.toast-body').html(data.message);

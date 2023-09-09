@@ -1,5 +1,6 @@
 @section('header')
     <link rel="stylesheet" href="{{ asset('assets/css/custom/dashboard.css') }}">
+        <script src="{{ asset('assets/js/custom/user/logout.js') }}"></script>
 @endsection
 @extends('layout.index')
 @section('content')

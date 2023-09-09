@@ -37,6 +37,9 @@ function showAuthors() {
             return false;
         },
         error: function (data) {
+            if (data.status === 401) {
+                window.location.href = '/login';
+            }
             const message = data.responseJSON.response.validation[0];
             $('.toast-body').html(message);
             $('.toast').toast('show');
@@ -110,6 +113,9 @@ function insert() {
             // $('.toast').toast('show');
         },
         error: function (data) {
+            if (data.status === 401) {
+                window.location.href = '/login';
+            }
             const message = Object.values(data.responseJSON.response.validation)[0];
             $('.message').html(message);
             // $('.toast').toast('show');
@@ -188,6 +194,9 @@ function update() {
             // $('.toast').toast('show');
         },
         error: function (data) {
+            if (data.status === 401) {
+                window.location.href = '/login';
+            }
             const message = Object.values(data.responseJSON.response.validation)[0];
             $('.message').html(message);
             // $('.toast').toast('show');
@@ -223,6 +232,9 @@ function confirmDelete() {
             }
         },
         error: function (data) {
+            if (data.status === 401) {
+                window.location.href = '/login';
+            }
             const message = Object.values(data.responseJSON.response.validation)[0];
             $('.message').html(message);
             // $('.toast').toast('show');
@@ -251,6 +263,9 @@ function show(uuid) {
             }
         },
         error: function (data) {
+            if (data.status === 401) {
+                window.location.href = '/login';
+            }
             const message = Object.values(data.responseJSON.response.validation)[0];
             $('.message').html(message);
         }
