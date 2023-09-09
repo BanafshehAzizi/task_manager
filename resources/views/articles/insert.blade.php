@@ -10,6 +10,9 @@
         <div class="col-12 grid-margin stretch-card">
             <div class="card">
                 <div class="card-body">
+                    <div class="message mb-3 alert-info">
+
+                    </div>
                     <form class="forms-sample">
                         <div class="form-group">
                             <label for="exampleInputName1">Title</label>
@@ -21,14 +24,14 @@
                         </div>
                         <div class="form-group">
                             <label for="exampleSelectGender">Author</label>
-                            <select class="form-control" id="author" name="author">
+                            <select class="form-control" id="author_id" name="author_id">
                             </select>
                         </div>
                         <div class="form-group">
                             <label for="exampleTextarea1">Description</label>
                             <textarea class="form-control" id="description" rows="4" name="description"></textarea>
                         </div>
-                        <button type="button" class="btn btn-gradient-primary me-2" onclick="insert">Submit</button>
+                        <button type="button" class="btn btn-gradient-primary me-2" onclick="insert()">Submit</button>
                     </form>
                 </div>
             </div>
@@ -36,5 +39,6 @@
     </div>
 @endsection
 @section('script')
-    <script src="{{ asset('assets/js/custom/article/dashboard.js') }}"></script>
+    <script src="{{ asset('assets/js/custom/article/articles.js') }}"></script>
+    <script src="{{ asset('assets/js/moments/moment.min.js') }}"></script>
 @endsection

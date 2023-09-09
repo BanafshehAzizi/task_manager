@@ -40,7 +40,7 @@ class ArticleController extends Controller
     {
         $input = [
             'title' => $request->title,
-            'priority_id' => $request->priority_id,
+            'priority_id' => $request->priority_id ?: 3,
             'author_id' => Auth::id(),
             'description' => $request->description,
             'attachments' => $request->attachments,
