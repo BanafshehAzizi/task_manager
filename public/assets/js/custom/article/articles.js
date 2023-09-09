@@ -86,6 +86,8 @@ function showFiles() {
 
 
 function insert() {
+    $('#insert_button').prop('disabled', true);
+
     const token = localStorage.getItem('token');
     const title = $('#title').val();
     let published_at = $('#published_at').val();
@@ -96,10 +98,14 @@ function insert() {
     if (title_validation == false) {
         /*        $('.toast-body').html('The title field is invalid');
                 $('.toast').toast('show');*/
+        $('#insert_button').prop('disabled', false);
+
         $('.message').html('The title field is invalid');
         return false;
     }
     if (title.length < 3 || title.length > 50) {
+        $('#insert_button').prop('disabled', false);
+
         /*        $('.toast-body').html('The title must have between 3 and 50 characters');
                 $('.toast').toast('show');*/
         $('.message').html('The title must have between 3 and 50 characters')
@@ -107,6 +113,8 @@ function insert() {
     }
     const published_at_validation = isNotEmpty(published_at) && isValidDate(published_at);
     if (published_at_validation == false) {
+        $('#insert_button').prop('disabled', false);
+
         $('.message').html('The publication date field is invalid');
         // $('.toast').toast('show');
         return false;
@@ -116,17 +124,23 @@ function insert() {
     published_at = moment(published_at, "YYYY-M-D H:mm:ss").format("YYYY-MM-DD HH:mm:ss");
     const author_id_validation = isNotEmpty(author_id) && isValidUuid(author_id)
     if (author_id_validation == false) {
+        $('#insert_button').prop('disabled', false);
+
         $('.message').html('The author field is invalid');
         // $('.toast').toast('show');
         return false;
     }
     const description_validation = isNotEmpty(description) && isValidDescription(description);
     if (description_validation == false) {
+        $('#insert_button').prop('disabled', false);
+
         $('.message').html('The description field is invalid');
         // $('.toast').toast('show');
         return false;
     }
     if (description.length < 10 || description.length > 65000) {
+        $('#insert_button').prop('disabled', false);
+
         $('.message').html('The title must have between 10 and 65000 characters');
         // $('.toast').toast('show');
         return false;
@@ -146,10 +160,14 @@ function insert() {
         },
         cache: false,
         success: function (data) {
+            $('#insert_button').prop('disabled', false);
+
+
             $('.message').html(data.message);
             // $('.toast').toast('show');
         },
         error: function (data) {
+            $('#insert_button').prop('disabled', false);
             if (data.status === 401) {
                 window.location.href = '/login';
             }

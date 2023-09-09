@@ -31,7 +31,7 @@
                             <label for="exampleTextarea1">Description</label>
                             <textarea class="form-control" id="description" rows="4" name="description"></textarea>
                         </div>
-                        <button type="button" class="btn btn-gradient-primary me-2" onclick="insert()">Submit</button>
+                        <button id="insert_button" type="button" class="btn btn-gradient-primary me-2" onclick="insert()">Submit</button>
                     </form>
                 </div>
             </div>
