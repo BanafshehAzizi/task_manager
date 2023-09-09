@@ -68,7 +68,7 @@ class ArticleController extends Controller
             'article_id' => $request->article_id,
             'title' => $request->title,
             'priority_id' => $request->priority_id,
-            'author_id' => $request->autho_id,
+            'author_id' => $request->author_id,
             'description' => $request->description,
             'published_at' => $request->published_at
         ];

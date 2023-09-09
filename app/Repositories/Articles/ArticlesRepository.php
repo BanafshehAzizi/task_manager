@@ -24,6 +24,7 @@ class ArticlesRepository extends AbstractBaseRepository
             'status_id',
             'created_at',
             'updated_at',
+            'published_at',
             'author_id',
             'summary'
         ];
@@ -66,6 +67,7 @@ class ArticlesRepository extends AbstractBaseRepository
             'status_id',
             'created_at',
             'updated_at',
+            'published_at',
             'author_id',
             'summary'
         ];
@@ -73,7 +75,7 @@ class ArticlesRepository extends AbstractBaseRepository
         $priority_select = ['id', 'name'];
         $status_select = ['id', 'name'];
         $author_select = ['id', 'first_name', 'last_name'];
-        $detail_select = ['id', 'content'];
+        $detail_select = ['id', 'description', 'article_id'];
 
         $article_order_by_column = $request->order_by_column ?: 'created_at';
         $article_order_by_direction = $request->order_by_direction ?: 'desc';

@@ -37,7 +37,7 @@ function list() {
                                         <div class="mb-5">
 ${value.summary}
                                         </div>
-                                        <a href="#" class="btn-gray">Show Article</a>
+                                        <a href="/articles/${value.id}" class="btn-gray">Show Article</a>
                                     </div>
                                 </div>
                             </li>

@@ -19,4 +19,12 @@ class ArticleController extends Controller
             'title' => 'Create Article'
         ]);
     }
+
+    public function update()
+    {
+        return view('articles.update')->with([
+            'title' => 'Update Article'
+        ]);
+    }
+
 }

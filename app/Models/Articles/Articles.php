@@ -38,6 +38,11 @@ class Articles extends Model
         return $this->belongsTo(Users::class, 'author_id', 'id');
     }
 
+    public function detail()
+    {
+        return $this->hasOne(ArticleDetail::class, 'article_id', 'id');
+    }
+
     public function scopeFilter($query, $request)
     {
         $query->when($request->article_id ?? false,
