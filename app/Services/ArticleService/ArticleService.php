@@ -99,9 +99,31 @@ class ArticleService extends AbstractBaseService
 
     public function delete($input)
     {
-        $this->article_repository->deleteRepository([
-            'where' => [['id', $input['article_id']]]//, ['author_id', $input['author_id']]
-        ]);
+        try {
+            $article = $this->article_repository->findRepository([
+                'id' => $input['article_id']//, ['author_id', $input['author_id']]
+            ]);
+        } catch (Exception $exception) {
+            throw ValidationException::withMessages(['article not found']);
+        }
+
+        DB::transaction(function () use ($input, $article) {
+            foreach($article->detail->files as $file) {
+                $this->deleteFile([
+                    'article_id' => $input['article_id'],
+                    'token' => $file->token
+                ]);
+            }
+
+            $this->article_detail_repository->deleteRepository([
+                'where' => [['article_id', $input['article_id']]]//, ['author_id', $input['author_id']]
+            ]);
+
+            $this->article_repository->deleteRepository([
+                'where' => [['id', $input['article_id']]]//, ['author_id', $input['author_id']]
+            ]);
+
+        });
     }
 
     public function update($input)

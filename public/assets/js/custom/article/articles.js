@@ -262,6 +262,8 @@ function confirmDelete() {
                 $('#published_at').val(null);
                 $('#author_id').val(null);
                 $('#description').html("");
+                $('#files_div').html("");
+                // show(uuid);
             }
         },
         error: function (data) {
@@ -288,11 +290,11 @@ function show(uuid) {
         cache: false,
         success: function (data) {
             if (data.status == 'success') {
-                $('#title').val(data.response[0].title);
+                $('#title').val(data.response[0].title || null);
                 const published_at = moment(data.response[0].published_at, "YYYY-MM-DD HH:mm:ss").format("YYYY-MM-DDTHH:mm");
-                $('#published_at').val(published_at);
-                $('#author_id').val(data.response[0].author_id);
-                $('#description').html(data.response[0].detail.description);
+                $('#published_at').val(published_at || null);
+                $('#author_id').val(data.response[0].author_id || null);
+                $('#description').html(data.response[0].detail.description || null);
 
                 let html = '';
                 data.response[0].detail.files.forEach((value, key) => {
@@ -300,10 +302,9 @@ function show(uuid) {
                     <div class="d-flex">
                         <a href="/storage/${value.name}" target="_blank"><img src="/assets/images/file-icon.png"></a>
                     </div>
-                    <button type="button" class="btn btn-danger" onclick="deleteFile(${value.token})">delete</button>
+                    <button type="button" class="btn btn-danger" onclick='deleteFile("${value.token}")'>delete</button>
                 </div>`;
                 });
-                console.log(html);
 
                 $('#files_div').html(html);
             }
@@ -332,7 +333,7 @@ function insertFile() {
     form_data.append('browser_name', getBrowserName());
 
     $.ajax({
-        url: "/api/v1/articles/" + uuid +"/files",
+        url: "/api/v1/articles/" + uuid + "/files",
         type: "POST",
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
@@ -358,6 +359,38 @@ function insertFile() {
         }
     });
 }
+
+function deleteFile(file_token) {
+    const token = localStorage.getItem('token');
+    const uuid = getUuid();
+
+    $.ajax({
+        url: "/api/v1/articles/" + uuid + "/files/" + file_token,
+        type: "DELETE",
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+            'Authorization': 'Bearer ' + token,
+        },
+        data: {
+
+        },
+        cache: false,
+        processData: false,
+        contentType: false,
+        success: function (data) {
+            $('#file_message').html(data.message);
+            show(uuid);
+        },
+        error: function (data) {
+            if (data.status === 401) {
+                window.location.href = '/login';
+            }
+            const message = Object.values(data.responseJSON.response.validation)[0];
+            $('#file_message').html(message);
+        }
+    });
+}
+
 function getBrowserName() {
     var browserName = '';
     if (navigator.userAgent.indexOf("Chrome") != -1 && navigator.userAgent.indexOf("Safari") != -1) {
