@@ -68,9 +68,15 @@ class CheckUserEventMiddleware
         if (empty($user->events->toArray())) {
             return null;
         }
-        $user_event = $user->events()->where('event_id', $input['event_id'])->orderBy('pivot_created_at', 'desc')->orderBy('status_id', 'asc')->first();
-
-        if (!empty($user_event) && $user_event->pivot->status_id == 1) {#In Progress
+//        $user_event = $user->events()->where('event_id', $input['event_id'])->orderBy('pivot_created_at', 'desc')->orderBy('status_id', 'asc')->first();
+        $event = $this->user_service->showEvent([
+            'where' => [
+                ['status_id', 1],
+                ['user_id', $input['user_id']],
+                ['event_id', $input['event_id']],
+            ]
+        ]);
+        if (!empty($user_event) && !empty($event)) {#In Progress
             throw ValidationException::withMessages(['The request is repetitive.']);
         }
     }

@@ -22,8 +22,8 @@ class UserService extends AbstractBaseService
     private $users_pivot_events_repository;
 
     public function __construct(
-        UsersRepository             $user_repository,
-        UsersEventsRepository $users_events_repository,
+        UsersRepository            $user_repository,
+        UsersEventsRepository      $users_events_repository,
         UsersPivotEventsRepository $users_pivot_events_repository
     )
     {
@@ -126,5 +126,11 @@ class UserService extends AbstractBaseService
     public function list(Request $request)
     {
         return $this->user_repository->list($request);
+    }
+
+    public function showEvent($input)
+    {
+        return $this->users_pivot_events_repository->showRepository($input);
+
     }
 }
