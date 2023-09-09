@@ -72,7 +72,7 @@ class FileService extends AbstractBaseService
             'name' => $file_path,
             'user_id' => $input['user_id'],
             'browser_id' => $browser_id,
-            'ip_address' => $input['ip_address'],
+//            'ip_address' => $input['ip_address'],
             'type_id' => ($input['file_type'] == 'private') ? 1 : 2,
             'token' => bin2hex(random_bytes(16)),
             'token_expired_at' => Carbon::now()->addMinutes($function->value)

@@ -17,7 +17,7 @@ return new class extends Migration
             $table->unsignedBigInteger('type_id');
             $table->unsignedBigInteger('browser_id')->nullable();
             $table->unsignedBigInteger('extension_id');
-            $table->string('ip_address',32)->nullable();
+//            $table->string('ip_address',32)->nullable();
             $table->string('name');
             $table->integer('size');
             $table->string('token');

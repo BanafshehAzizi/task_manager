@@ -166,14 +166,12 @@ function update() {
         return false;
     }
     if (description.length < 10 || description.length > 65000) {
-        $('.message').html('The title must have between 10 and 65000 characters');
+        $('.message').html('The description must have between 10 and 65000 characters');
         // $('.toast').toast('show');
         return false;
     }
 
-    const current_url = window.location.href;
-    const url_parts = current_url.split('/articles/');
-    const uuid = url_parts[1];
+    const uuid = getUuid();
 
     $.ajax({
         url: "/api/v1/articles/" + uuid,
@@ -217,9 +215,7 @@ function confirmDelete() {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
             'Authorization': 'Bearer ' + token,
         },
-        data: {
-
-        },
+        data: {},
         cache: false,
         success: function (data) {
             $('.message').html(data.message);
@@ -228,7 +224,7 @@ function confirmDelete() {
                 $('#title').val(null);
                 $('#published_at').val(null);
                 $('#author_id').val(null);
-                $('#description').html(null);
+                $('#description').html("");
             }
         },
         error: function (data) {
@@ -269,5 +265,73 @@ function show(uuid) {
             const message = Object.values(data.responseJSON.response.validation)[0];
             $('.message').html(message);
         }
+    });
+}
+
+
+function getUuid() {
+    const current_url = window.location.href;
+    const url_parts = current_url.split('/articles/');
+    return url_parts[1];
+}
+
+function insertFile() {
+    const token = localStorage.getItem('token');
+    let form_data = new FormData(document.getElementById('FileForm'));
+    const uuid = getUuid();
+    form_data.append('browser_name', getBrowserName());
+    getIpAddress(function(ipAddress) {
+        form_data.append('ip_address', ipAddress);
+    });
+
+    $.ajax({
+        url: "/api/v1/articles/" + uuid +"/files",
+        type: "POST",
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+            'Authorization': 'Bearer ' + token,
+        },
+        data: form_data,
+        cache: false,
+        processData: false,
+        contentType: false,
+        // enctype: 'multipart/form-data',
+        success: function (data) {
+            console.log('success');
+            $('#file_message').html(data.message);
+            // $('.toast').toast('show');
+        },
+        error: function (data) {
+            if (data.status === 401) {
+                window.location.href = '/login';
+            }
+            const message = Object.values(data.responseJSON.response.validation)[0];
+            $('#file_message').html(message);
+            // $('.toast').toast('show');
+        }
+    });
+}
+function getBrowserName() {
+    var browserName = '';
+    if (navigator.userAgent.indexOf("Chrome") != -1 && navigator.userAgent.indexOf("Safari") != -1) {
+        browserName = 'Chrome';
+    } else if (navigator.userAgent.indexOf("Firefox") != -1) {
+        browserName = 'Firefox';
+    } else if (navigator.userAgent.indexOf("MSIE") != -1 || !!document.documentMode == true) {
+        browserName = 'Internet Explorer';
+    } else if (navigator.userAgent.indexOf("Edge") != -1) {
+        browserName = 'Microsoft Edge';
+    } else if (navigator.userAgent.indexOf("Opera") != -1 || navigator.userAgent.indexOf("OPR") != -1) {
+        browserName = 'Opera';
+    } else if (navigator.userAgent.indexOf("Safari") != -1) {
+        browserName = 'Safari';
+    } else {
+        browserName = 'Unknown';
+    }
+    return browserName;
+}
+function getIpAddress(callback) {
+    $.getJSON("https://api.ipify.org?format=json", function(data) {
+        callback(data.ip);
     });
 }

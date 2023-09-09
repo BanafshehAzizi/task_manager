@@ -34,6 +34,20 @@
                         </div>
                         <button type="button" class="btn btn-gradient-primary me-2" onclick="update()">Submit</button>
                     </form>
+                    <div class="card-body">
+                        <form id="FileForm" method="post"
+                              enctype="multipart/form-data">
+                            @csrf
+                            <div class="form-group">
+                                <input type="file" class="form-control" name="files[]" id="files[]" multiple>
+                                <button type="button" onclick="insertFile()" id="addImageButton" class="btn btn-info">upload
+                                </button>
+                            </div>
+                            <div id="file_message"></div>
+                            <div>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>

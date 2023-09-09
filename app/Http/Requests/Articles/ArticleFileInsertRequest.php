@@ -25,7 +25,7 @@ class ArticleFileInsertRequest extends FormRequest
             'article_id' => ['required', 'uuid', 'exists:articles,id'],
             'files' => ['required','array', 'max:3'],
             'browser_name' => ['required', 'string', 'regex:/^[a-zA-Z0-9\s_-]+$/'],
-            'ip_address' => ['required', 'ip']
+//            'ip_address' => ['required', 'ip']
         ];
     }
 

@@ -83,7 +83,7 @@ class ArticleController extends Controller
             'article_id' => $request->article_id,
             'user_id' => Auth::id(),
             'browser_name' => $request->browser_name,
-            'ip_address' => $request->ip_address,
+//            'ip_address' => $request->ip_address,
             'files' => $request->file('files')
         ];
         $this->article_service->insertFiles($input);
