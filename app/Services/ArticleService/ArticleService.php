@@ -100,7 +100,7 @@ class ArticleService extends AbstractBaseService
     public function delete($input)
     {
         $this->article_repository->deleteRepository([
-            'where' => [['id', $input['article_id']], ['author_id', $input['author_id']]]
+            'where' => [['id', $input['article_id']]]//, ['author_id', $input['author_id']]
         ]);
     }
 

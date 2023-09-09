@@ -5,31 +5,7 @@ $(document).ready(function () {
         const url_parts = current_url.split('/articles/');
         const uuid = url_parts[1];
         if (isNotEmpty(uuid)) {
-            const token = localStorage.getItem('token');
-
-            $.ajax({
-                url: "/api/v1/articles/" + uuid,
-                type: "GET",
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-                    'Authorization': 'Bearer ' + token,
-                },
-                data: {},
-                cache: false,
-                success: function (data) {
-                    if (data.status == 'success') {
-                        $('#title').val(data.response[0].title);
-                        const published_at = moment(data.response[0].published_at, "YYYY-MM-DD HH:mm:ss").format("YYYY-MM-DDTHH:mm");
-                        $('#published_at').val(published_at);
-                        $('#author_id').val(data.response[0].author_id);
-                        $('#description').html(data.response[0].detail.description);
-                    }
-                },
-                error: function (data) {
-                    const message = Object.values(data.responseJSON.response.validation)[0];
-                    $('.message').html(message);
-                }
-            });
+            show(uuid);
         }
     }
 });
@@ -192,10 +168,7 @@ function update() {
     const current_url = window.location.href;
     const url_parts = current_url.split('/articles/');
     const uuid = url_parts[1];
-    console.log(            title,
-        published_at,
-        author_id,
-        description);
+
     $.ajax({
         url: "/api/v1/articles/" + uuid,
         type: "PUT",
@@ -222,3 +195,64 @@ function update() {
     });
 }
 
+
+function confirmDelete() {
+    const token = localStorage.getItem('token');
+    const current_url = window.location.href;
+    const url_parts = current_url.split('/articles/');
+    const uuid = url_parts[1];
+    $.ajax({
+        url: "/api/v1/articles/" + uuid,
+        type: "DELETE",
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+            'Authorization': 'Bearer ' + token,
+        },
+        data: {
+
+        },
+        cache: false,
+        success: function (data) {
+            $('.message').html(data.message);
+            // $('.toast').toast('show');
+            if (data.status == 'success') {
+                $('#title').val(null);
+                $('#published_at').val(null);
+                $('#author_id').val(null);
+                $('#description').html(null);
+            }
+        },
+        error: function (data) {
+            const message = Object.values(data.responseJSON.response.validation)[0];
+            $('.message').html(message);
+            // $('.toast').toast('show');
+        }
+    });
+}
+
+function show(uuid) {
+    const token = localStorage.getItem('token');
+    $.ajax({
+        url: "/api/v1/articles/" + uuid,
+        type: "GET",
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+            'Authorization': 'Bearer ' + token,
+        },
+        data: {},
+        cache: false,
+        success: function (data) {
+            if (data.status == 'success') {
+                $('#title').val(data.response[0].title);
+                const published_at = moment(data.response[0].published_at, "YYYY-MM-DD HH:mm:ss").format("YYYY-MM-DDTHH:mm");
+                $('#published_at').val(published_at);
+                $('#author_id').val(data.response[0].author_id);
+                $('#description').html(data.response[0].detail.description);
+            }
+        },
+        error: function (data) {
+            const message = Object.values(data.responseJSON.response.validation)[0];
+            $('.message').html(message);
+        }
+    });
+}

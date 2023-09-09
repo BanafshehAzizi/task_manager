@@ -5,6 +5,7 @@
                 <span class="page-title-icon bg-gradient-primary text-white mr-2">
                   <i class="mdi mdi-home"></i>
                 </span>Update Article</h3>
+        <button type="button" class="btn btn-danger" onclick="confirmDelete()">Delete</button>
     </div>
     <div class="row">
         <div class="col-12 grid-margin stretch-card">
