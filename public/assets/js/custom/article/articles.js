@@ -345,8 +345,8 @@ function insertFile() {
         contentType: false,
         // enctype: 'multipart/form-data',
         success: function (data) {
-            console.log('success');
             $('#file_message').html(data.message);
+            show(uuid);
             // $('.toast').toast('show');
         },
         error: function (data) {
