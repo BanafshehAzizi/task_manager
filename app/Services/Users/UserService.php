@@ -109,7 +109,7 @@ class UserService extends AbstractBaseService
         try {
             $this->findService(['id' => $input['user_id']]);
         } catch (\Exception $exception) {
-            throw ValidationException::withMessages([__('messages.public.error.not_exist', ['pattern' => __('validation.attributes.user')])]);//todo
+            throw ValidationException::withMessages(['User not found']);
         }
 
         $this->users_pivot_events_repository->updateRepository([

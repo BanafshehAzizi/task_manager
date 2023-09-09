@@ -80,7 +80,7 @@ class ArticleService extends AbstractBaseService
                             ]
                         ]);
                     } catch (\Exception $exception) {
-                        throw ValidationException::withMessages([__('messages.public.error.not_exist', ['pattern' => __('validation.attributes.file')])]);
+                        throw ValidationException::withMessages(['file not found']);
                     }
                     $detail->files()->attach($file->id);
                 }
@@ -131,7 +131,7 @@ class ArticleService extends AbstractBaseService
                 'where' => [['article_id', $input['article_id']]],
             ]);
         } catch (\Exception $exception) {
-            //TODO
+            throw ValidationException::withMessages(['article not found']);
         }
 
         DB::transaction(function () use ($input, $article_detail) {
@@ -154,7 +154,7 @@ class ArticleService extends AbstractBaseService
                 'where' => [['article_id', $input['article_id']]],
             ]);
         } catch (\Exception $exception) {
-            //TODO
+            throw ValidationException::withMessages(['article not found']);
         }
 
         try {
@@ -162,7 +162,7 @@ class ArticleService extends AbstractBaseService
                 'where' => [['token', $input['token']]],
             ]);
         } catch (\Exception $exception) {
-            //TODO
+            throw ValidationException::withMessages(['file not found']);
         }
 
         DB::transaction(function () use ($input, $article_detail, $file) {

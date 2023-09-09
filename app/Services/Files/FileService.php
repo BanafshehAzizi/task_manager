@@ -51,10 +51,7 @@ class FileService extends AbstractBaseService
         $extension_id = $function->id;
 
         if ($size > $function->max_size) {
-            throw ValidationException::withMessages([__('validation.max.file', [
-                'attribute' => __('validation.attributes.file'),
-                'max' => $function->max_size
-            ])]);//todo
+            throw ValidationException::withMessages(['The file may not be greater than ' . $function->max_size]);
         }
 
         $function = $this->browser_repository->showRepository(['where' => [['name', strtolower($input['browser_name'])]]]);
@@ -116,11 +113,11 @@ class FileService extends AbstractBaseService
     {
         $file_name = $input['file']->getClientOriginalName();
         if ($file_name != trim($file_name) || strpos($file_name, ' ') !== false) {
-            throw ValidationException::withMessages([__('messages.public.error.invalid', ['pattern' => __('validation.attributes.file_name')])]);
+            throw ValidationException::withMessages(['invalid file name']);
         }
 
         if (preg_match("/^[آ ا ب پ ت ث ج چ ح خ د ذ ر ز ژ س ش ص ض ط ظ ع غ ف ق ک گ ل م ن و ه ی]/", $input['file']->getClientOriginalName())) {
-            throw ValidationException::withMessages([__('messages.public.error.invalid', ['pattern' => __('validation.attributes.file_name')])]);
+            throw ValidationException::withMessages(['invalid file name.']);
         }
 
         /*        $function = $this->file_extension_repository->showWithFailRepository(['where' => [['id', '!=', -1]]]);
@@ -131,7 +128,7 @@ class FileService extends AbstractBaseService
                 $file_formats = $function->pluck('mime_type');*/
         $function = $this->file_extension_repository->showRepository(['where' => [['name', $input['file']->getClientOriginalExtension()]]]);
         if (empty($function)) {
-            throw ValidationException::withMessages([__('messages.public.error.invalid', ['pattern' => __('validation.attributes.mime_type')])]);
+            throw ValidationException::withMessages(['invalid file extension.']);
         }
     }
 
@@ -141,8 +138,8 @@ class FileService extends AbstractBaseService
             $file = $this->file_repository->showWithFailRepository([
                 'where' => [['token', $input['token']]]//, ['user_id', $input['user_id']]
             ]);
-        }catch (Exception $exception) {
-            //todo
+        } catch (Exception $exception) {
+            throw ValidationException::withMessages(['file not found']);
         }
 
         Storage::delete($file->name);
