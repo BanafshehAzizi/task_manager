@@ -26,4 +26,8 @@ class Files extends Model
     ];
 
     protected $table = 'files';
+
+    public function scopeFilter($query, $request){
+
+    }
 }

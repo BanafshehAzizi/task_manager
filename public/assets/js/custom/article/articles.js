@@ -47,6 +47,43 @@ function showAuthors() {
     });
 }
 
+function showFiles() {
+    const token = localStorage.getItem('token');
+
+    $.ajax({
+        url: "/api/v1/users",
+        type: "GET",
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+            'Authorization': 'Bearer ' + token
+        },
+        data: {},
+        cache: false,
+        success: function (data) {
+            if (data.status == 'success') {
+                let html = '';
+                data.response.forEach((value, key) => {
+                    html += `<option value="${value.id}">${value.first_name} ${value.last_name}</option>`;
+                });
+                $('#author_id').html(html);
+                return true;
+            }
+
+            $('.toast-body').html(data.message);
+            $('.toast').toast('show');
+            return false;
+        },
+        error: function (data) {
+            if (data.status === 401) {
+                window.location.href = '/login';
+            }
+            const message = data.responseJSON.response.validation[0];
+            $('.toast-body').html(message);
+            $('.toast').toast('show');
+        }
+    });
+}
+
 
 function insert() {
     const token = localStorage.getItem('token');
@@ -256,6 +293,19 @@ function show(uuid) {
                 $('#published_at').val(published_at);
                 $('#author_id').val(data.response[0].author_id);
                 $('#description').html(data.response[0].detail.description);
+
+                let html = '';
+                data.response[0].detail.files.forEach((value, key) => {
+                    html += `<div class="col-2">
+                    <div class="d-flex">
+                        <a href="/storage/${value.name}" target="_blank"><img src="/assets/images/file-icon.png"></a>
+                    </div>
+                    <button type="button" class="btn btn-danger" onclick="deleteFile(${value.token})">delete</button>
+                </div>`;
+                });
+                console.log(html);
+
+                $('#files_div').html(html);
             }
         },
         error: function (data) {
@@ -280,9 +330,6 @@ function insertFile() {
     let form_data = new FormData(document.getElementById('FileForm'));
     const uuid = getUuid();
     form_data.append('browser_name', getBrowserName());
-    getIpAddress(function(ipAddress) {
-        form_data.append('ip_address', ipAddress);
-    });
 
     $.ajax({
         url: "/api/v1/articles/" + uuid +"/files",
@@ -329,9 +376,4 @@ function getBrowserName() {
         browserName = 'Unknown';
     }
     return browserName;
-}
-function getIpAddress(callback) {
-    $.getJSON("https://api.ipify.org?format=json", function(data) {
-        callback(data.ip);
-    });
 }

@@ -99,14 +99,25 @@ class Articles extends Model
     public function scopeWithHasDetail($query, $select, $request)
     {
         $detail_callback = function ($query) use ($select, $request) {
-            $query->select($select);
-            $query->filter($request);
+            $query->select($select['detail']);
+            $query->filter($request['detail']);
         };
 
-        $query->with(['detail' => $detail_callback]);
+        $file_callback = function ($query) use ($select, $request) {
+            $query->select($select['file']);
+            $query->filter($request['file']);
+        };
 
-        if (!empty($request))
+        $query->with([
+            'detail' => $detail_callback,
+            'detail.files' => $file_callback,
+        ]);
+
+        if (!empty($request['detail']))
             $query->whereHas('detail', $detail_callback);
+
+        if (!empty($request['file']))
+            $query->whereHas('file', $file_callback);
     }
 
     public function scopeWithHasAuthor($query, $select, $request)

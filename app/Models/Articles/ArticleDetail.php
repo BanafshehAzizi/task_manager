@@ -25,6 +25,9 @@ class ArticleDetail extends Model
         return $this->belongsToMany(Files::class, 'article_detail_files', 'detail_id', 'file_id')
             ->using(new class extends Pivot {
                 use HasUuids, SoftDeletes;
+                public function scopeFilter($query, $request){
+
+                }
             })
             ->withTimestamps();
     }
