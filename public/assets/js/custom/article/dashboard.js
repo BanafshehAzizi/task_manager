@@ -52,6 +52,9 @@ ${value.summary}
             return false;
         },
         error: function (data) {
+            if (data.status === 401) {
+                window.location.href = '/login';
+            }
             const message = data.responseJSON.response.validation[0];
             $('.toast-body').html(message);
             $('.toast').toast('show');
